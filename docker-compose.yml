@@ -28,3 +28,23 @@ services:
       - "traefik.http.routers.whoami.rule=Host(`whoami.pahang.ai`)"
       - "traefik.http.routers.whoami.entrypoints=websecure"
       - "traefik.http.routers.whoami.tls.certresolver=myresolver"
+
+  portainer:
+    image: "portainer/portainer-ce:lts"
+    container_name: "portainer"
+    restart: always
+    ports:
+      - "8000:8000"
+      - "9443:9443"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "portainer_data:/data"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.portainer.rule=Host(`portainer.pahang.ai`)"
+      - "traefik.http.routers.portainer.entrypoints=websecure"
+      - "traefik.http.routers.portainer.tls.certresolver=myresolver"
+      - "traefik.http.services.portainer.loadbalancer.server.port=9000"
+
+volumes:
+  portainer_data:

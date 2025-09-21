@@ -50,6 +50,8 @@ services:
     image: docker.n8n.io/n8nio/n8n
     container_name: "n8n"
     restart: always
+    depends_on:
+      - postgres
     ports:
       - "5678:5678"
     labels:
@@ -67,6 +69,8 @@ services:
       - traefik.http.middlewares.n8n.headers.STSIncludeSubdomains=true
       - traefik.http.middlewares.n8n.headers.STSPreload=true
       - traefik.http.routers.n8n.middlewares=n8n@docker
+    env_file:
+      - .env
     environment:
       - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
       - N8N_HOST=n8n.pahang.ai
@@ -77,6 +81,13 @@ services:
       - WEBHOOK_URL=https://n8n.pahang.ai/
       - GENERIC_TIMEZONE=Asia/Jakarta
       - TZ=Asia/Jakarta
+      - DB_TYPE=postgresdb
+      - DB_POSTGRESDB_HOST=postgres
+      - DB_POSTGRESDB_PORT=5432
+      - DB_POSTGRESDB_USER=${N8N_DB_USER}
+      - DB_POSTGRESDB_PASSWORD=${N8N_DB_PASSWORD}
+      - DB_POSTGRESDB_DATABASE=${N8N_DB_DATABASE}
+
     volumes:
       - n8n_data:/home/node/.n8n
       - ./local-files:/files

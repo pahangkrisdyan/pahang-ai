@@ -107,9 +107,21 @@ services:
       - "traefik.http.routers.pgadmin4.rule=Host(`pgadmin4.pahang.ai`)"
       - "traefik.http.routers.pgadmin4.entrypoints=websecure"
       - "traefik.http.routers.pgadmin4.tls.certresolver=myresolver"
+      - "traefik.http.services.pgadmin4.loadbalancer.server.port=80"
+      # Add headers middleware for proper content type handling
+      - "traefik.http.middlewares.pgadmin4-headers.headers.customresponseheaders.X-Frame-Options=SAMEORIGIN"
+      - "traefik.http.middlewares.pgadmin4-headers.headers.customresponseheaders.X-Content-Type-Options=nosniff"
+      - "traefik.http.routers.pgadmin4.middlewares=pgadmin4-headers@docker"
     environment:
       - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}
       - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD}
+      # Important: Tell pgAdmin it's behind a proxy
+      - PGADMIN_CONFIG_PROXY_X_HOST_COUNT=2
+      - PGADMIN_CONFIG_PROXY_X_PREFIX_COUNT=2
+      - PGADMIN_CONFIG_PROXY_X_PROTO_COUNT=2
+      - PGADMIN_CONFIG_PROXY_X_PORT_COUNT=2
+      # Ensure pgAdmin knows the correct external URL
+      - PGADMIN_CONFIG_CONSOLE_LOG_LEVEL=10
 
 volumes:
   portainer_data:

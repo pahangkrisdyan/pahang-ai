@@ -159,6 +159,7 @@ services:
       - KC_HOSTNAME_STRICT=false
       - KC_HOSTNAME_STRICT_HTTPS=false
       - KC_HTTP_ENABLED=true
+    command: start --optimized
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.keycloak.rule=Host(`keycloak.pahang.ai`)"

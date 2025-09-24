@@ -156,14 +156,13 @@ services:
       - KC_BOOTSTRAP_ADMIN_USERNAME=${KC_BOOTSTRAP_ADMIN_USERNAME}
       - KC_BOOTSTRAP_ADMIN_PASSWORD=${KC_BOOTSTRAP_ADMIN_PASSWORD}
       - KC_PROXY=edge
-      - KC_HOSTNAME_STRICT=true
-      - KC_HOSTNAME_STRICT_HTTPS=true
       - KC_HTTP_ENABLED=true
       - KC_PROXY_ADDRESS_FORWARDING=true
-      - KC_HOSTNAME=keycloak.pahang.ai
+      - KC_HOSTNAME_STRICT_HTTPS=true
+      - KC_HOSTNAME_STRICT_BACKCHANNEL=false
       - KC_HOSTNAME_URL=https://keycloak.pahang.ai
       - KC_HOSTNAME_ADMIN_URL=https://keycloak.pahang.ai
-      - KC_HOSTNAME_STRICT_BACKCHANNEL=false
+      - KC_PROXY_HEADERS=xforwarded
     command: start
     labels:
       - "traefik.enable=true"

@@ -159,6 +159,8 @@ services:
       - KC_HOSTNAME_STRICT=false
       - KC_HOSTNAME_STRICT_HTTPS=false
       - KC_HTTP_ENABLED=true
+      - KC_PROXY_ADDRESS_FORWARDING=true
+      - KC_HOSTNAME_URL=https://keycloak.pahang.ai
     command: start
     labels:
       - "traefik.enable=true"

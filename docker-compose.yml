@@ -136,8 +136,45 @@ services:
       - "traefik.http.middlewares.pgadmin4.headers.forceSTSHeader=true"
       - "traefik.http.routers.pgadmin4.middlewares=pgadmin4@docker"
 
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    container_name: "keycloak"
+    restart: always
+    depends_on:
+      - postgres
+    ports:
+      - "8080:8080"
+    volumes:
+      - keycloak_data:/opt/keycloak/data
+    env_file:
+      - .env
+    environment:
+      - KC_DB=postgres
+      - KC_DB_URL=jdbc:postgresql://postgres:5432/${KC_DB_NAME}
+      - KC_DB_USERNAME=${KC_DB_USERNAME}
+      - KC_DB_PASSWORD=${KC_DB_PASSWORD}
+      - KC_BOOTSTRAP_ADMIN_USERNAME=${KC_BOOTSTRAP_ADMIN_USERNAME}
+      - KC_BOOTSTRAP_ADMIN_PASSWORD=${KEYCLOAK_ADMIN_PASSWORD}
+      - KC_PROXY=edge
+      - KC_HOSTNAME_STRICT=false
+      - KC_HOSTNAME_STRICT_HTTPS=false
+      - KC_HTTP_ENABLED=true
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.keycloak.rule=Host(`keycloak.pahang.ai`)"
+      - "traefik.http.routers.keycloak.entrypoints=websecure"
+      - "traefik.http.routers.keycloak.tls.certresolver=myresolver"
+      - "traefik.http.services.keycloak.loadbalancer.server.port=8080"
+      - "traefik.http.middlewares.keycloak.headers.SSLRedirect=true"
+      - "traefik.http.middlewares.keycloak.headers.STSSeconds=315360000"
+      - "traefik.http.middlewares.keycloak.headers.browserXSSFilter=true"
+      - "traefik.http.middlewares.keycloak.headers.contentTypeNosniff=true"
+      - "traefik.http.middlewares.keycloak.headers.forceSTSHeader=true"
+      - "traefik.http.routers.keycloak.middlewares=keycloak@docker"
+
 volumes:
   portainer_data:
   n8n_data:
   postgres_data:
   pgadmin4_data:
+  keycloak_data:

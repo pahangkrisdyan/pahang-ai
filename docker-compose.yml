@@ -163,6 +163,7 @@ services:
       - KC_HOSTNAME_STRICT_BACKCHANNEL=false
       - KC_HOSTNAME_URL=https://keycloak.pahang.ai
       - KC_HOSTNAME_ADMIN_URL=https://keycloak.pahang.ai
+      - KC_HOSTNAME=keycloak.pahang.ai
     command: start
     labels:
       - "traefik.enable=true"

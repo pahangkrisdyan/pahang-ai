@@ -161,13 +161,13 @@ services:
       - KC_PROXY_HEADERS=xforwarded
       - KC_HOSTNAME_STRICT_HTTPS=true
       - KC_HOSTNAME_STRICT_BACKCHANNEL=false
-      - KC_HOSTNAME_URL=https://keycloak.pahang.ai
-      - KC_HOSTNAME_ADMIN_URL=https://keycloak.pahang.ai
-      - KC_HOSTNAME=keycloak.pahang.ai
+      - KC_HOSTNAME_URL=https://iam.pahang.ai
+      - KC_HOSTNAME_ADMIN_URL=https://iam.pahang.ai
+      - KC_HOSTNAME=iam.pahang.ai
     command: start
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.keycloak.rule=Host(`keycloak.pahang.ai`)"
+      - "traefik.http.routers.keycloak.rule=Host(`iam.pahang.ai`)"
       - "traefik.http.routers.keycloak.entrypoints=websecure"
       - "traefik.http.routers.keycloak.tls.certresolver=myresolver"
       - "traefik.http.services.keycloak.loadbalancer.server.port=8080"
